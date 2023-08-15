@@ -1,35 +1,67 @@
-import { VStack, Image, Text, Center, Heading, ScrollView } from 'native-base'
+import {
+  VStack,
+  Image,
+  Text,
+  Center,
+  Heading,
+  ScrollView,
+  useToast,
+} from 'native-base'
 import { useNavigation } from '@react-navigation/native'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signUpSchema } from '@utils/SchemaValidation'
 import * as z from 'zod'
 
+import { api } from '@services/api'
+
 import { Input } from '@components/Input'
 import { Button } from '@components/Button'
 
 import BackgroundImg from '@assets/background.png'
 import LogoSvg from '@assets/logo.svg'
+import { AppError } from '@utils/AppError'
 
 type SignUpDataType = z.infer<typeof signUpSchema>
 
 export function SignUp() {
+  const toast = useToast()
+
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<SignUpDataType>({
     resolver: zodResolver(signUpSchema),
     defaultValues: { name: '', email: '', password: '', password_confirm: '' },
   })
+
   const navigation = useNavigation()
 
   function handleGoBack() {
     navigation.goBack()
   }
 
-  function handleSignUp(data: SignUpDataType) {
-    console.log(data)
+  async function handleSignUp(data: SignUpDataType) {
+    try {
+      const response = await api.post('/users', {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      })
+      console.log(response.data)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível criar a conta, tente novamente mais tarde.'
+
+      toast.show({
+        title: title,
+        placement: 'top',
+        bgColor: 'red.500',
+      })
+    }
   }
 
   return (
@@ -129,6 +161,7 @@ export function SignUp() {
 
           <Button
             title="Criar e acessar"
+            isDisabled={isSubmitting}
             onPress={handleSubmit(handleSignUp)}
           />
         </Center>
