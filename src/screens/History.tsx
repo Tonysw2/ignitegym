@@ -16,7 +16,7 @@ export function History() {
   ])
 
   return (
-    <VStack>
+    <VStack flex={1}>
       <ScreenHeader title="Histórico de Exercícios" />
 
       <SectionList
@@ -44,6 +44,13 @@ export function History() {
             Vamos fazer exercício hoje?
           </Text>
         )}
+        contentContainerStyle={
+          exercises.length === 0 && {
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }
+        }
         showsVerticalScrollIndicator={false}
       />
     </VStack>

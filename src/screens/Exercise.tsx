@@ -122,14 +122,6 @@ export function Exercise() {
           </Box>
         </VStack>
       </ScrollView>
-
-      <div
-        className=""
-        onClick={() => {}}
-        onAbort={() => {}}
-      >
-        exemplo 123.
-      </div>
     </VStack>
   )
 }
