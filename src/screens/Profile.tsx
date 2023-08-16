@@ -16,6 +16,7 @@ import { TouchableOpacity } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
 import { FileInfo } from 'expo-file-system'
+import defaultUserPhotoLogin from '@assets/userPhotoDefault.png'
 
 const PHOTO_SIZE = 33
 
@@ -84,7 +85,7 @@ export function Profile() {
             />
           ) : (
             <UserPhoto
-              url={userPhoto}
+              source={userPhoto ? { uri: userPhoto } : defaultUserPhotoLogin}
               alt="Foto do usuário"
               size={PHOTO_SIZE}
             />

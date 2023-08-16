@@ -21,11 +21,14 @@ import { Button } from '@components/Button'
 import BackgroundImg from '@assets/background.png'
 import LogoSvg from '@assets/logo.svg'
 import { AppError } from '@utils/AppError'
+import { useAuth } from '@hooks/useAuth'
+import { useState } from 'react'
 
 type SignUpDataType = z.infer<typeof signUpSchema>
 
 export function SignUp() {
   const toast = useToast()
+  const { signIn } = useAuth()
 
   const {
     control,
@@ -44,12 +47,13 @@ export function SignUp() {
 
   async function handleSignUp(data: SignUpDataType) {
     try {
-      const response = await api.post('/users', {
+      await api.post('/users', {
         name: data.name,
         email: data.email,
         password: data.password,
       })
-      console.log(response.data)
+
+      await signIn(data.email, data.password)
     } catch (error) {
       const isAppError = error instanceof AppError
       const title = isAppError
@@ -161,7 +165,7 @@ export function SignUp() {
 
           <Button
             title="Criar e acessar"
-            isDisabled={isSubmitting}
+            isLoading={isSubmitting}
             onPress={handleSubmit(handleSignUp)}
           />
         </Center>
