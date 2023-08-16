@@ -22,7 +22,6 @@ import BackgroundImg from '@assets/background.png'
 import LogoSvg from '@assets/logo.svg'
 import { AppError } from '@utils/AppError'
 import { useAuth } from '@hooks/useAuth'
-import { useState } from 'react'
 
 type SignUpDataType = z.infer<typeof signUpSchema>
 
@@ -115,7 +114,7 @@ export function SignUp() {
                 placeholder="Nome"
                 onChangeText={onChange}
                 value={value}
-                errorMessage={errors.name?.message}
+                errorMessage={errors?.name?.message}
               />
             )}
           />
@@ -130,7 +129,7 @@ export function SignUp() {
                 autoCapitalize="none"
                 onChangeText={onChange}
                 value={value}
-                errorMessage={errors.email?.message}
+                errorMessage={errors?.email?.message}
               />
             )}
           />
@@ -144,7 +143,7 @@ export function SignUp() {
                 secureTextEntry
                 onChangeText={onChange}
                 value={value}
-                errorMessage={errors.password?.message}
+                errorMessage={errors?.password?.message}
               />
             )}
           />
@@ -158,7 +157,7 @@ export function SignUp() {
                 secureTextEntry
                 onChangeText={onChange}
                 value={value}
-                errorMessage={errors.password_confirm?.message}
+                errorMessage={errors?.password_confirm?.message}
               />
             )}
           />
