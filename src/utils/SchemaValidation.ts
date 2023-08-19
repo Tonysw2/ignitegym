@@ -19,3 +19,24 @@ export const signUpSchema = z
     message: 'A confirmação da senha não confere.',
     path: ['password_confirm'],
   })
+
+export const profileUpdateSchema = z
+  .object({
+    name: z.string().nonempty('Informe o nome.').trim(),
+    old_password: z.string().trim(),
+    password: z
+      .string()
+      .min(6, 'A senha deve ter pelo menos 6 dígitos.')
+      .trim()
+      .nullish()
+      .transform((value) => (!!value ? value : undefined)),
+    password_confirm: z
+      .string()
+      .trim()
+      .nullish()
+      .transform((value) => (!!value ? value : undefined)),
+  })
+  .refine((values) => values.password === values.password_confirm, {
+    message: 'A confirmação da senha não confere.',
+    path: ['password_confirm'],
+  })

@@ -62,7 +62,7 @@ export function SignUp() {
       toast.show({
         title: title,
         placement: 'top',
-        bgColor: 'red.500',
+        bgColor: 'red.700',
       })
     }
   }

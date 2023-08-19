@@ -17,6 +17,7 @@ type AuthContextProps = {
   isLoadingUserStorageData: boolean
   signIn: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
+  updateUserProfile: (userUpdated: UserDTO) => Promise<void>
 }
 
 export const AuthContext = createContext({} as AuthContextProps)
@@ -88,6 +89,15 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }
 
+  async function updateUserProfile(userUpdated: UserDTO) {
+    try {
+      setUser(userUpdated)
+      await storageUserSave(userUpdated)
+    } catch (error) {
+      throw error
+    }
+  }
+
   useEffect(() => {
     loadUserData()
   }, [])
@@ -99,6 +109,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         isLoadingUserStorageData,
         signIn,
         signOut,
+        updateUserProfile,
       }}
     >
       {children}

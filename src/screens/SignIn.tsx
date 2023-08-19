@@ -50,7 +50,7 @@ export function SignIn() {
       toast.show({
         title: title,
         placement: 'top',
-        bgColor: 'red.500',
+        bgColor: 'red.700',
       })
     }
   }

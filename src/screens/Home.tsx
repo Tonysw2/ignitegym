@@ -1,13 +1,20 @@
 import { ExerciseCard } from '@components/ExerciseCard'
 import { Group } from '@components/Group'
 import { HomeHeader } from '@components/HomeHeader'
-import { Loading } from '@components/Loading'
 import { ExerciseDTO } from '@dtos/ExerciseDTO'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { AppNavigatorRoutesProps } from '@routes/app.routes'
 import { api } from '@services/api'
 import { AppError } from '@utils/AppError'
-import { HStack, VStack, FlatList, Heading, Text, useToast } from 'native-base'
+import {
+  HStack,
+  VStack,
+  FlatList,
+  Heading,
+  Text,
+  useToast,
+  Skeleton,
+} from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 
 export function Home() {
@@ -36,7 +43,7 @@ export function Home() {
       toast.show({
         title,
         placement: 'top',
-        bgColor: 'red.500',
+        bgColor: 'red.700',
       })
     }
   }
@@ -55,7 +62,7 @@ export function Home() {
       toast.show({
         title,
         placement: 'top',
-        bgColor: 'red.500',
+        bgColor: 'red.700',
       })
     } finally {
       setIsLoading(false)
@@ -76,65 +83,120 @@ export function Home() {
     <VStack flex={1}>
       <HomeHeader />
 
-      <FlatList
-        data={groups}
-        keyExtractor={(item) => item}
-        renderItem={({ item, index }) => (
-          <Group
-            name={item.toUpperCase()}
-            isActive={groupSelected === item}
-            onPress={() => setGroupSelected(item)}
-            mr={index === groups.length - 1 ? 0 : 3}
-          />
-        )}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        _contentContainerStyle={{ px: 8 }}
-        my={10}
-        minH={10}
-        maxH={10}
-        h={10}
-      />
-
       {!isLoading ? (
-        <VStack
-          flex={1}
-          px={8}
-        >
-          <HStack
-            justifyContent={'space-between'}
-            mb={5}
-          >
-            <Heading
-              color={'gray.200'}
-              fontSize={'md'}
-              fontFamily={'heading'}
-            >
-              Exercícios
-            </Heading>
-            <Text
-              color={'gray.200'}
-              fontSize={'sm'}
-            >
-              {exercises.length}
-            </Text>
-          </HStack>
-
+        <>
           <FlatList
-            data={exercises}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <ExerciseCard
-                data={item}
-                onPress={() => handleOpenExerciseDetails(item.id)}
+            data={groups}
+            keyExtractor={(item) => item}
+            renderItem={({ item, index }) => (
+              <Group
+                name={item.toUpperCase()}
+                isActive={groupSelected === item}
+                onPress={() => setGroupSelected(item)}
+                mr={index === groups.length - 1 ? 0 : 3}
               />
             )}
-            showsVerticalScrollIndicator={false}
-            _contentContainerStyle={{ pb: 20 }}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            _contentContainerStyle={{ px: 8 }}
+            my={10}
+            minH={10}
+            maxH={10}
+            h={10}
           />
-        </VStack>
+
+          <VStack
+            flex={1}
+            px={8}
+          >
+            <HStack
+              justifyContent={'space-between'}
+              mb={5}
+            >
+              <Heading
+                color={'gray.200'}
+                fontSize={'md'}
+                fontFamily={'heading'}
+              >
+                Exercícios
+              </Heading>
+              <Text
+                color={'gray.200'}
+                fontSize={'sm'}
+              >
+                {exercises.length}
+              </Text>
+            </HStack>
+
+            <FlatList
+              data={exercises}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <ExerciseCard
+                  data={item}
+                  onPress={() => handleOpenExerciseDetails(item.id)}
+                />
+              )}
+              showsVerticalScrollIndicator={false}
+              _contentContainerStyle={{ pb: 20 }}
+            />
+          </VStack>
+        </>
       ) : (
-        <Loading />
+        <>
+          <HStack
+            space={3}
+            my={10}
+            px={8}
+          >
+            {Array.from({ length: 5 }).map((_, index) => (
+              <Skeleton
+                key={index}
+                h={10}
+                w={24}
+                rounded={'md'}
+                startColor={'gray.500'}
+                endColor={'gray.400'}
+              />
+            ))}
+          </HStack>
+
+          <VStack
+            flex={1}
+            px={8}
+          >
+            <HStack
+              mb={5}
+              justifyContent={'space-between'}
+            >
+              <Skeleton
+                h={7}
+                rounded={'md'}
+                flex={0.85}
+                startColor={'gray.500'}
+                endColor={'gray.400'}
+              />
+              <Skeleton
+                h={7}
+                rounded={'md'}
+                flex={0.1}
+                startColor={'gray.500'}
+                endColor={'gray.400'}
+              />
+            </HStack>
+
+            {Array.from({ length: 5 }).map((_, index) => (
+              <Skeleton
+                key={index}
+                h={20}
+                rounded={'md'}
+                mb={3}
+                startColor={'gray.500'}
+                endColor={'gray.400'}
+              />
+            ))}
+          </VStack>
+        </>
       )}
     </VStack>
   )

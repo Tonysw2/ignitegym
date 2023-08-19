@@ -58,7 +58,7 @@ export function Exercise() {
       toast.show({
         title,
         placement: 'top',
-        bgColor: 'red.500',
+        bgColor: 'red.700',
       })
     } finally {
       setIsLoading(false)
@@ -74,7 +74,7 @@ export function Exercise() {
       toast.show({
         title: 'Parabéns! exercício registrado no seu histórico.',
         placement: 'top',
-        bgColor: 'green.500',
+        bgColor: 'green.700',
       })
     } catch (error) {
       const isAppError = error instanceof AppError
@@ -85,7 +85,7 @@ export function Exercise() {
       toast.show({
         title,
         placement: 'top',
-        bgColor: 'red.500',
+        bgColor: 'red.700',
       })
     } finally {
       setIsSubmittingRegister(false)
