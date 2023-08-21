@@ -53,7 +53,7 @@ export function History() {
     <VStack flex={1}>
       <ScreenHeader title="Histórico de Exercícios" />
 
-      {isLoading ? (
+      {!isLoading ? (
         <SectionList
           sections={exercises}
           keyExtractor={(item) => item.id}

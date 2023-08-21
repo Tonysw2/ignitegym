@@ -71,6 +71,8 @@ export function Exercise() {
 
       await api.post('/history', { exercise_id: exerciseId })
 
+      navigation.navigate('history')
+
       toast.show({
         title: 'Parabéns! exercício registrado no seu histórico.',
         placement: 'top',
